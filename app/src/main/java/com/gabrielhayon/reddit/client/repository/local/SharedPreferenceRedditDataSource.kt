@@ -9,8 +9,11 @@ class SharedPreferenceRedditDataSource() : RedditLocalDataSource {
     }
 
     override fun saveReadPostsIds(context: Context, readPostsIds: List<String>) {
+        val postIdsToSave = getReadPostsIds(context) as ArrayList
+        postIdsToSave.addAll(readPostsIds)
+
         getSharedPreferences(context).edit().apply {
-            putStringSet(READ_POSTS_KEY, readPostsIds.toMutableSet())
+            putStringSet(READ_POSTS_KEY, postIdsToSave.toMutableSet())
             apply()
         }
     }
