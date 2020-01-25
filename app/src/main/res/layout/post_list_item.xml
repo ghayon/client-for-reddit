@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="data"
+            type="com.gabrielhayon.reddit.client.ui.postslist.PostItemViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:id="@+id/userName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{data.username}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:textColorResId="@{data.textColor}"
+            tools:text="gabrielhayon"
+            tools:textColor="@color/unreadTextColor" />
+
+        <TextView
+            android:id="@+id/postDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{@string/hoursAgo(data.postHoursTimestamp)}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/userName"
+            app:textColorResId="@{data.textColor}"
+            tools:text="5 hours ago"
+            tools:textColor="@color/unreadTextColor" />
+
+        <TextView
+            android:id="@+id/postTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{data.title}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/postDate"
+            app:textColorResId="@{data.textColor}"
+            tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed eiusmod tempo"
+            tools:textColor="@color/unreadTextColor" />
+
+        <ImageView
+            android:id="@+id/postThumbnail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:imageUrl="@{data.thumbnailUrl}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/postTitle"
+            tools:src="@drawable/ic_launcher_background" />
+
+        <TextView
+            android:id="@+id/postTotalComments"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{@string/hoursAgo(data.totalComments)}"
+            android:textColor="@color/colorAccent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/postThumbnail"
+            tools:text="13456 comments" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

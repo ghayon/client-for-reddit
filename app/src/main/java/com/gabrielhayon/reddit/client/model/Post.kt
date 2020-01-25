@@ -5,7 +5,7 @@ import java.io.Serializable
 
 data class Post(
     val title: String,
-    val thumbnail: String,
+    val thumbnail: String?,
     val url: String,
     val createdUtc: Long,
     val name: String,

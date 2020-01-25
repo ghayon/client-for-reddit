@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">ClientForReddit</string>
+    <string name="commentsTotal">%1$s comments</string>
+    <string name="hoursAgo">%1$s hours ago</string>
 </resources>
