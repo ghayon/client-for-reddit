@@ -12,7 +12,7 @@ object RedditRepository {
     private val remoteRedditDataSource: RedditRemoteDataSource = RemoteRedditDataSource()
     private val localRedditDataSource: RedditLocalDataSource = SharedPreferenceRedditDataSource()
 
-    fun getTopPosts(limit: String, after: String?): ServiceResponse {
+    fun getTopPosts(limit: Int, after: String?): ServiceResponse {
         return try {
             val response = remoteRedditDataSource.getTopPosts(limit, after)
 

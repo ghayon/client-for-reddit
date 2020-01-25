@@ -18,6 +18,8 @@ data class ServiceResponse(
             return ServiceResponse(ResponseCode.SERVICE_ERROR)
         }
     }
+
+    fun isOK(): Boolean = ResponseCode.OK == code
 }
 
 enum class ResponseCode {

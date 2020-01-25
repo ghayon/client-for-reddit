@@ -40,8 +40,8 @@ class RemoteRedditDataSource :
         writeTimeout(NETWORK_TIMEOUT, TimeUnit.SECONDS)
     }.build()
 
-    override fun getTopPosts(limit: String, after: String?): Response<RedditResponse> {
-        return redditService.getTopPosts(limit, after ?: "").execute()
+    override fun getTopPosts(limit: Int, after: String?): Response<RedditResponse> {
+        return redditService.getTopPosts("$limit", after ?: "").execute()
     }
 
     private companion object {

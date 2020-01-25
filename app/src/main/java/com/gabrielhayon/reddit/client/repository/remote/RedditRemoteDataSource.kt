@@ -4,5 +4,5 @@ import com.gabrielhayon.reddit.client.model.RedditResponse
 import retrofit2.Response
 
 interface RedditRemoteDataSource {
-    fun getTopPosts(limit: String, after: String?): Response<RedditResponse>
+    fun getTopPosts(limit: Int, after: String?): Response<RedditResponse>
 }
