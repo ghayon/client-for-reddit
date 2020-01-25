@@ -19,7 +19,7 @@ class DataBinder {
         @JvmStatic
         @BindingAdapter("textColorResId")
         fun setTextColorFromResId(textView: TextView, textColorResId: Int) {
-            textView.setTextColor(textColorResId)
+            textView.setTextColor(textView.context.getColor(textColorResId))
         }
     }
 }

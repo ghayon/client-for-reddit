@@ -14,21 +14,28 @@ class TopListViewModel : ViewModel() {
     val posts: MutableLiveData<List<Post>> = MutableLiveData()
 
     private var after: String? = null
+    //FIXME: Should be saved in DB
+    private var lastPosts: ArrayList<Post> = arrayListOf()
 
-    suspend fun getTopPost(context: Context) = withContext(Dispatchers.IO) {
-        val serviceResponse = RedditRepository.getTopPosts(15, after)
-        if (serviceResponse.isOK()) {
-            val redditResponse = serviceResponse.response as RedditResponse
+    suspend fun getTopPost(context: Context, bringFromBeggining: Boolean) = withContext(Dispatchers.IO) {
+            if (bringFromBeggining) cleanSavedPosts()
 
-            after = redditResponse.data.after
-            val postsToShow = getPostsToShow(context, redditResponse.data.children)
-            withContext(Dispatchers.Main) {
-                posts.value = postsToShow
+            val serviceResponse = RedditRepository.getTopPosts(15, after)
+            if (serviceResponse.isOK()) {
+                val redditResponse = serviceResponse.response as RedditResponse
+
+                after = redditResponse.data.after
+
+                val postsToShow = getPostsToShow(context, redditResponse.data.children.map { it.data })
+                lastPosts.addAll(postsToShow)
+
+                withContext(Dispatchers.Main) {
+                    posts.value = lastPosts
+                }
             }
-        }
 
-        //TODO: Show error view when serviceReponse is not successful
-    }
+            //TODO: Show error view when serviceReponse is not successful
+        }
 
     fun markPostAsRead(context: Context, name: String) {
         RedditRepository.saveReadPostsIds(context, listOf(name))
@@ -56,5 +63,10 @@ class TopListViewModel : ViewModel() {
         val names = RedditRepository.getReadPostsIds(context)
         posts.forEach { it.read = names.contains(it.name) }
         return posts
+    }
+
+    private fun cleanSavedPosts() {
+        after = null
+        lastPosts = arrayListOf()
     }
 }

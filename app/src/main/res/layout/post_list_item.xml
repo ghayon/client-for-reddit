@@ -13,28 +13,34 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary">
+        android:background="@color/colorPrimary"
+        android:paddingLeft="12dp"
+        android:paddingTop="4dp"
+        android:paddingRight="12dp">
 
         <TextView
             android:id="@+id/userName"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginRight="12dp"
             android:text="@{data.username}"
+            android:textSize="14sp"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/postDate"
             app:layout_constraintTop_toTopOf="parent"
             app:textColorResId="@{data.textColor}"
             tools:text="gabrielhayon"
             tools:textColor="@color/unreadTextColor" />
 
         <TextView
-            android:id="@+id/postDate"
+            android:id="@id/postDate"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@{@string/hoursAgo(data.postHoursTimestamp)}"
-            app:layout_constraintLeft_toLeftOf="parent"
+            android:textSize="14sp"
+            app:layout_constraintLeft_toRightOf="@id/userName"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/userName"
+            app:layout_constraintTop_toTopOf="parent"
             app:textColorResId="@{data.textColor}"
             tools:text="5 hours ago"
             tools:textColor="@color/unreadTextColor" />
@@ -44,6 +50,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@{data.title}"
+            android:textSize="20sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/postDate"
@@ -55,9 +62,12 @@
             android:id="@+id/postThumbnail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             app:imageUrl="@{data.thumbnailUrl}"
+            app:layout_constraintEnd_toEndOf="@+id/postTitle"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/postTitle"
             app:layout_constraintTop_toBottomOf="@id/postTitle"
             tools:src="@drawable/ic_launcher_background" />
 
@@ -65,12 +75,18 @@
             android:id="@+id/postTotalComments"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{@string/hoursAgo(data.totalComments)}"
+            android:text="@{@string/commentsTotal(data.totalComments)}"
             android:textColor="@color/colorAccent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/postThumbnail"
             tools:text="13456 comments" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="4dp"
+            android:background="@color/white"
+            app:layout_constraintTop_toBottomOf="@id/postTotalComments" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

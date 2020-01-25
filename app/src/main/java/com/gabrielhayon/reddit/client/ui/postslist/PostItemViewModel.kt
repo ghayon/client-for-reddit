@@ -10,7 +10,7 @@ class PostItemViewModel(private val post: Post) {
         return if (post.read) R.color.readTextColor else R.color.unreadTextColor
     }
 
-    fun getTitle(): String {
+    fun getTitle(): String? {
         return post.title
     }
 

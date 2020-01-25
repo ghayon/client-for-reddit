@@ -16,7 +16,7 @@ object RedditRepository {
         return try {
             val response = remoteRedditDataSource.getTopPosts(limit, after)
 
-            if (response.isSuccessful) ServiceResponse.buildSuccessful(response) else ServiceResponse.buildServiceError()
+            if (response.isSuccessful) ServiceResponse.buildSuccessful(response.body()!!) else ServiceResponse.buildServiceError()
         } catch (e: IOException) {
             ServiceResponse.buildNetworkError()
         } catch (e: Exception) {
