@@ -12,6 +12,9 @@ import com.gabrielhayon.reddit.client.R
 import com.gabrielhayon.reddit.client.model.Post
 import com.gabrielhayon.reddit.client.ui.TopListViewModel
 import kotlinx.android.synthetic.main.post_list_fragment.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class PostListFragment : Fragment() {
 
@@ -31,6 +34,10 @@ class PostListFragment : Fragment() {
 
         postsList.layoutManager = LinearLayoutManager(activity)
         postsList.adapter = PostListAdapter(vm)
+
+        dismissAllPosts.setOnClickListener {
+            GlobalScope.launch(Dispatchers.IO) { vm.markAllPostAsDismissed(it.context) }
+        }
     }
 
     private fun updatePosts(posts: List<Post>) {

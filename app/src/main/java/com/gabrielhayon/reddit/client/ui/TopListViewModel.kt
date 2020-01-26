@@ -52,6 +52,10 @@ class TopListViewModel : ViewModel() {
         markPostsAsDismissed(context, listOf(name))
     }
 
+    suspend fun markAllPostAsDismissed(context: Context) = withContext(Dispatchers.IO) {
+        markPostsAsDismissed(context, posts.value!!.map { it.name })
+    }
+
     suspend fun markPostsAsDismissed(context: Context, names: List<String>) =
         withContext(Dispatchers.IO) {
             RedditRepository.saveDismissedPostsIds(context, names)

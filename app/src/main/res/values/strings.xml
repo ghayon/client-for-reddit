@@ -3,4 +3,5 @@
     <string name="commentsTotal">%1$s comments</string>
     <string name="hoursAgo">%1$s hours ago</string>
     <string name="dismissPost">Dismiss post</string>
+    <string name="dismissAllPost">Dismiss all</string>
 </resources>
