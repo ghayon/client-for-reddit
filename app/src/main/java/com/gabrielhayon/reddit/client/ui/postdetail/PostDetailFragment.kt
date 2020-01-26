@@ -18,6 +18,7 @@ class PostDetailFragment : Fragment() {
     lateinit var binding: PostDetailFragmentBinding
 
     private val vm: TopListViewModel by activityViewModels()
+    var postToShow: Post? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,9 +33,13 @@ class PostDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         vm.postRead.observe(activity as TopListActivity, Observer { showPost(it) })
+
+        postToShow?.let {
+            showPost(it)
+        }
     }
 
-    fun showPost(post: Post) {
+    private fun showPost(post: Post) {
         binding.data = PostDetailViewModel(post)
     }
 }

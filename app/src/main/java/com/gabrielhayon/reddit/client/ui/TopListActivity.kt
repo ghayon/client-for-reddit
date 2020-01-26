@@ -32,29 +32,64 @@ class TopListActivity : AppCompatActivity() {
             GlobalScope.launch { vm.getTopPost(this@TopListActivity, true) }
         }
 
-        if (resources.configuration.orientation == ORIENTATION_LANDSCAPE) {
-            addPostsListFragment()
-            addPostDetailFragment()
+        if (isLandscape()) {
+            addPostsListFragment(R.id.postsFragmentContainer)
+            addPostDetailFragment(R.id.postDetailFragmentContainer)
         } else {
-            addPostsListFragment()
+            addPostsListFragment(R.id.fragmentContainer)
+        }
+    }
+
+    override fun onBackPressed() {
+        if (!isLandscape() && postDetailFragment.isVisible) {
+            hidePostDetailFragment()
+            addPostsListFragment(R.id.fragmentContainer)
+        } else {
+            super.onBackPressed()
         }
     }
 
     private fun updateDetailFragment(post: Post) {
-        if (resources.configuration.orientation != ORIENTATION_LANDSCAPE) {
-            postDetailFragment.showPost(post)
+        if (!isLandscape()) {
+            postDetailFragment.postToShow = post
+            addPostDetailFragment(R.id.fragmentContainer)
+            hidePostsListFragment()
         }
     }
 
-    private fun addPostsListFragment() {
+    private fun hidePostDetailFragment() {
+        val postDetailTransaction = supportFragmentManager.beginTransaction()
+        postDetailTransaction.hide(postDetailFragment)
+        postDetailTransaction.commit()
+    }
+
+    private fun hidePostsListFragment() {
         val postListTransaction = supportFragmentManager.beginTransaction()
-        postListTransaction.add(R.id.postsFragmentContainer, postListFragment)
+        postListTransaction.hide(postListFragment)
         postListTransaction.commit()
     }
 
-    private fun addPostDetailFragment() {
-        val postDetailTransaction = supportFragmentManager.beginTransaction()
-        postDetailTransaction.add(R.id.postDetailFragmentContainer, postDetailFragment)
-        postDetailTransaction.commit()
+    private fun addPostsListFragment(layoutId: Int) {
+        val postListTransaction = supportFragmentManager.beginTransaction()
+        with(postListTransaction) {
+            if (postListFragment.isHidden) show(postListFragment) else add(
+                layoutId,
+                postListFragment
+            )
+            commit()
+        }
     }
+
+    private fun addPostDetailFragment(layoutId: Int) {
+        val postDetailTransaction = supportFragmentManager.beginTransaction()
+        with(postDetailTransaction) {
+            if (postDetailFragment.isHidden) show(postDetailFragment) else add(
+                layoutId,
+                postDetailFragment
+            )
+            commit()
+        }
+    }
+
+    private fun isLandscape() = resources.configuration.orientation == ORIENTATION_LANDSCAPE
 }
