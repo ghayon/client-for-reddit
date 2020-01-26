@@ -25,6 +25,7 @@ class TopListActivity : AppCompatActivity() {
 
         vm = ViewModelProviders.of(this).get(TopListViewModel::class.java)
         vm.postRead.observe(this, Observer { updateDetailFragment(it) })
+        vm.posts.observe(this, Observer { swipeRefreshLayout.isRefreshing = false })
 
         GlobalScope.launch { vm.getTopPost(this@TopListActivity, false) }
 
@@ -38,6 +39,8 @@ class TopListActivity : AppCompatActivity() {
         } else {
             addPostsListFragment(R.id.fragmentContainer)
         }
+
+        swipeRefreshLayout.isRefreshing = true
     }
 
     override fun onBackPressed() {
