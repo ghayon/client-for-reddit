@@ -32,11 +32,19 @@ object RedditRepository {
         localRedditDataSource.saveReadPostsIds(context, readPostsIds)
     }
 
+    fun cleanReadPostsIds(context: Context) {
+        localRedditDataSource.cleanReadPostsIds(context)
+    }
+
     fun getDismissedPostsIds(context: Context): List<String> {
         return localRedditDataSource.getDismissedPostsIds(context)
     }
 
     fun saveDismissedPostsIds(context: Context, dismissedPostsIds: List<String>) {
         localRedditDataSource.saveDismissedPostsIds(context, dismissedPostsIds)
+    }
+
+    fun cleanDismissedPostsIds(context: Context) {
+        localRedditDataSource.cleanDismissedPostsIds(context)
     }
 }

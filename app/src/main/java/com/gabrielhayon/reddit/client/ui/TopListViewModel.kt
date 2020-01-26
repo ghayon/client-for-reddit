@@ -20,7 +20,7 @@ class TopListViewModel : ViewModel() {
 
     suspend fun getTopPost(context: Context, bringFromBeggining: Boolean) =
         withContext(Dispatchers.IO) {
-            if (bringFromBeggining) cleanSavedPosts()
+            if (bringFromBeggining) cleanSavedPosts(context)
 
             val serviceResponse = RedditRepository.getTopPosts(15, after)
             if (serviceResponse.isOK()) {
@@ -81,8 +81,10 @@ class TopListViewModel : ViewModel() {
         return posts
     }
 
-    private fun cleanSavedPosts() {
+    private fun cleanSavedPosts(context: Context) {
         after = null
         lastPosts = arrayListOf()
+        RedditRepository.cleanDismissedPostsIds(context)
+        RedditRepository.cleanReadPostsIds(context)
     }
 }

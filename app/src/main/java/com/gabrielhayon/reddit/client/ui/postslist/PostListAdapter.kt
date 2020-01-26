@@ -8,6 +8,9 @@ import com.gabrielhayon.reddit.client.R
 import com.gabrielhayon.reddit.client.databinding.PostListItemBinding
 import com.gabrielhayon.reddit.client.model.Post
 import com.gabrielhayon.reddit.client.ui.TopListViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class PostListAdapter(private val activityVM: TopListViewModel) :
     RecyclerView.Adapter<PostListAdapter.PostItemViewHolder>() {
@@ -25,9 +28,14 @@ class PostListAdapter(private val activityVM: TopListViewModel) :
 
     override fun onBindViewHolder(holder: PostItemViewHolder, position: Int) {
         holder.bind(posts[position])
+        if (position == itemCount - 1) {
+            GlobalScope.launch(Dispatchers.IO) {
+                activityVM.getTopPost(holder.binding.root.context, false)
+            }
+        }
     }
 
-    inner class PostItemViewHolder(private val binding: PostListItemBinding) :
+    inner class PostItemViewHolder(val binding: PostListItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(post: Post) {
             binding.data = PostItemViewModel(post, activityVM)

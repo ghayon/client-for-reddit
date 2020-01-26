@@ -19,6 +19,13 @@ class SharedPreferenceRedditDataSource() : RedditLocalDataSource {
         }
     }
 
+    override fun cleanReadPostsIds(context: Context) {
+        getSharedPreferences(context).edit().apply {
+            putStringSet(READ_POSTS_KEY, mutableSetOf())
+            apply()
+        }
+    }
+
     override fun getDismissedPostsIds(context: Context): List<String> {
         return getSharedPreferences(context).getStringSet(
             DISMISSED_POSTS_KEY,
@@ -33,6 +40,13 @@ class SharedPreferenceRedditDataSource() : RedditLocalDataSource {
 
         getSharedPreferences(context).edit().apply {
             putStringSet(DISMISSED_POSTS_KEY, postIdsToSave.toMutableSet())
+            apply()
+        }
+    }
+
+    override fun cleanDismissedPostsIds(context: Context) {
+        getSharedPreferences(context).edit().apply {
+            putStringSet(DISMISSED_POSTS_KEY, mutableSetOf())
             apply()
         }
     }

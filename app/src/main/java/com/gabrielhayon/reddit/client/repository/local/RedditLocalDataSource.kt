@@ -12,7 +12,11 @@ interface RedditLocalDataSource {
 
     fun saveReadPostsIds(context: Context, readPostsIds: List<String>)
 
+    fun cleanReadPostsIds(context: Context)
+
     fun getDismissedPostsIds(context: Context): List<String>
 
     fun saveDismissedPostsIds(context: Context, dismissedPostsIds: List<String>)
+
+    fun cleanDismissedPostsIds(context: Context)
 }
