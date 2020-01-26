@@ -2,7 +2,6 @@ package com.gabrielhayon.reddit.client.ui
 
 import android.content.res.Configuration.ORIENTATION_LANDSCAPE
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -15,6 +14,8 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class TopListActivity : AppCompatActivity() {
+    private lateinit var vm: TopListViewModel
+
     private val postListFragment = PostListFragment()
     private val postDetailFragment = PostDetailFragment()
 
@@ -22,8 +23,8 @@ class TopListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.top_list_activity)
 
-        val vm = ViewModelProviders.of(this).get(TopListViewModel::class.java)
-        vm.posts.observe(this, Observer { updatePosts(it) })
+        vm = ViewModelProviders.of(this).get(TopListViewModel::class.java)
+        vm.postRead.observe(this, Observer { updateDetailFragment(it) })
 
         GlobalScope.launch { vm.getTopPost(this@TopListActivity, false) }
 
@@ -39,8 +40,10 @@ class TopListActivity : AppCompatActivity() {
         }
     }
 
-    private fun updatePosts(posts: List<Post>) {
-        postListFragment.postsToShow.value = posts
+    private fun updateDetailFragment(post: Post) {
+        if (resources.configuration.orientation != ORIENTATION_LANDSCAPE) {
+            postDetailFragment.showPost(post)
+        }
     }
 
     private fun addPostsListFragment() {

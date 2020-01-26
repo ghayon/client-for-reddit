@@ -5,16 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.MutableLiveData
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gabrielhayon.reddit.client.R
 import com.gabrielhayon.reddit.client.model.Post
+import com.gabrielhayon.reddit.client.ui.TopListViewModel
 import kotlinx.android.synthetic.main.post_list_fragment.*
 
 class PostListFragment : Fragment() {
 
-    val postsToShow: MutableLiveData<List<Post>> = MutableLiveData()
+    private val vm: TopListViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,14 +27,15 @@ class PostListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        vm.posts.observe(this, Observer { updatePosts(it) })
 
         postsList.layoutManager = LinearLayoutManager(activity)
-
-        postsToShow.observe(this, Observer { updatePosts(it) })
+        postsList.adapter = PostListAdapter(vm)
     }
 
     private fun updatePosts(posts: List<Post>) {
-        postsList.adapter = PostListAdapter(posts)
-        postsList.adapter!!.notifyDataSetChanged()
+        val adapter = postsList.adapter as PostListAdapter
+        adapter.posts = posts
+        adapter.notifyDataSetChanged()
     }
 }

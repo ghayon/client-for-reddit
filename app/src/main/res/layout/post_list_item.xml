@@ -16,7 +16,8 @@
         android:background="@color/colorPrimary"
         android:paddingLeft="12dp"
         android:paddingTop="4dp"
-        android:paddingRight="12dp">
+        android:paddingRight="12dp"
+        android:onClick="@{data.getPostReadOnClikListener()}">
 
         <TextView
             android:id="@+id/userName"

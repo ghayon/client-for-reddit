@@ -12,12 +12,14 @@ import kotlinx.coroutines.withContext
 class TopListViewModel : ViewModel() {
 
     val posts: MutableLiveData<List<Post>> = MutableLiveData()
+    val postRead: MutableLiveData<Post> = MutableLiveData()
 
     private var after: String? = null
     //FIXME: Should be saved in DB
     private var lastPosts: ArrayList<Post> = arrayListOf()
 
-    suspend fun getTopPost(context: Context, bringFromBeggining: Boolean) = withContext(Dispatchers.IO) {
+    suspend fun getTopPost(context: Context, bringFromBeggining: Boolean) =
+        withContext(Dispatchers.IO) {
             if (bringFromBeggining) cleanSavedPosts()
 
             val serviceResponse = RedditRepository.getTopPosts(15, after)
@@ -26,7 +28,8 @@ class TopListViewModel : ViewModel() {
 
                 after = redditResponse.data.after
 
-                val postsToShow = getPostsToShow(context, redditResponse.data.children.map { it.data })
+                val postsToShow =
+                    getPostsToShow(context, redditResponse.data.children.map { it.data })
                 lastPosts.addAll(postsToShow)
 
                 withContext(Dispatchers.Main) {
@@ -37,17 +40,23 @@ class TopListViewModel : ViewModel() {
             //TODO: Show error view when serviceReponse is not successful
         }
 
-    fun markPostAsRead(context: Context, name: String) {
+    suspend fun markPostAsRead(context: Context, name: String) = withContext(Dispatchers.IO) {
         RedditRepository.saveReadPostsIds(context, listOf(name))
+
+        withContext(Dispatchers.Main) {
+            postRead.value = posts.value?.find { it.name == name }
+        }
     }
 
-    fun markPostAsDismissed(context: Context, name: String) {
+    suspend fun markPostAsDismissed(context: Context, name: String) = withContext(Dispatchers.IO) {
         markPostsAsDismissed(context, listOf(name))
     }
 
-    fun markPostsAsDismissed(context: Context, names: List<String>) {
-        RedditRepository.saveDismissedPostsIds(context, names)
-    }
+    suspend fun markPostsAsDismissed(context: Context, names: List<String>) =
+        withContext(Dispatchers.IO) {
+            RedditRepository.saveDismissedPostsIds(context, names)
+            getTopPost(context, false)
+        }
 
     private fun getPostsToShow(context: Context, posts: List<Post>): List<Post> {
         val notDismissedPosts = filterDismissedPosts(context, posts)

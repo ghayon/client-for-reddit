@@ -7,9 +7,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.gabrielhayon.reddit.client.R
 import com.gabrielhayon.reddit.client.databinding.PostListItemBinding
 import com.gabrielhayon.reddit.client.model.Post
+import com.gabrielhayon.reddit.client.ui.TopListViewModel
 
-class PostListAdapter(private val posts: List<Post>) :
+class PostListAdapter(private val activityVM: TopListViewModel) :
     RecyclerView.Adapter<PostListAdapter.PostItemViewHolder>() {
+    var posts: List<Post> = arrayListOf()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostItemViewHolder {
         val view = DataBindingUtil.inflate<PostListItemBinding>(
             LayoutInflater.from(parent.context),
@@ -27,7 +30,7 @@ class PostListAdapter(private val posts: List<Post>) :
     inner class PostItemViewHolder(private val binding: PostListItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(post: Post) {
-            binding.data = PostItemViewModel(post)
+            binding.data = PostItemViewModel(post, activityVM)
         }
     }
 }
