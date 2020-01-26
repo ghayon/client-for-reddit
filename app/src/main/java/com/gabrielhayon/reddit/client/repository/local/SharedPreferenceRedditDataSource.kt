@@ -9,8 +9,9 @@ class SharedPreferenceRedditDataSource() : RedditLocalDataSource {
     }
 
     override fun saveReadPostsIds(context: Context, readPostsIds: List<String>) {
-        val postIdsToSave = getReadPostsIds(context) as ArrayList
-        postIdsToSave.addAll(readPostsIds)
+        val postIdsToSave: ArrayList<String> = arrayListOf()
+        getReadPostsIds(context).toCollection(postIdsToSave)
+        readPostsIds.toCollection(postIdsToSave)
 
         getSharedPreferences(context).edit().apply {
             putStringSet(READ_POSTS_KEY, postIdsToSave.toMutableSet())
@@ -19,12 +20,19 @@ class SharedPreferenceRedditDataSource() : RedditLocalDataSource {
     }
 
     override fun getDismissedPostsIds(context: Context): List<String> {
-        return getSharedPreferences(context).getStringSet(DISMISSED_POSTS_KEY, mutableSetOf())!!.toList()
+        return getSharedPreferences(context).getStringSet(
+            DISMISSED_POSTS_KEY,
+            mutableSetOf()
+        )!!.toList()
     }
 
     override fun saveDismissedPostsIds(context: Context, dismissedPostsIds: List<String>) {
+        val postIdsToSave: ArrayList<String> = arrayListOf()
+        getDismissedPostsIds(context).toCollection(postIdsToSave)
+        dismissedPostsIds.toCollection(postIdsToSave)
+
         getSharedPreferences(context).edit().apply {
-            putStringSet(DISMISSED_POSTS_KEY, dismissedPostsIds.toMutableSet())
+            putStringSet(DISMISSED_POSTS_KEY, postIdsToSave.toMutableSet())
             apply()
         }
     }
@@ -37,7 +45,8 @@ class SharedPreferenceRedditDataSource() : RedditLocalDataSource {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    private fun getSharedPreferences(context: Context) = context.getSharedPreferences(REDDIT_POSTS_SHARED_PREFERENCES, Context.MODE_PRIVATE)
+    private fun getSharedPreferences(context: Context) =
+        context.getSharedPreferences(REDDIT_POSTS_SHARED_PREFERENCES, Context.MODE_PRIVATE)
 
     private companion object {
         const val REDDIT_POSTS_SHARED_PREFERENCES = "REDDIT_POSTS_SHARED_PREFERENCES"

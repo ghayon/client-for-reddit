@@ -37,6 +37,6 @@ object RedditRepository {
     }
 
     fun saveDismissedPostsIds(context: Context, dismissedPostsIds: List<String>) {
-        localRedditDataSource.saveReadPostsIds(context, dismissedPostsIds)
+        localRedditDataSource.saveDismissedPostsIds(context, dismissedPostsIds)
     }
 }
