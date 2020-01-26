@@ -2,6 +2,7 @@ package com.gabrielhayon.reddit.client.ui
 
 import android.content.res.Configuration.ORIENTATION_LANDSCAPE
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -22,6 +23,7 @@ class TopListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.top_list_activity)
+        setUpToolbar()
 
         vm = ViewModelProviders.of(this).get(TopListViewModel::class.java)
         vm.postRead.observe(this, Observer { updateDetailFragment(it) })
@@ -50,6 +52,21 @@ class TopListActivity : AppCompatActivity() {
         } else {
             super.onBackPressed()
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun setUpToolbar() {
+        supportActionBar?.setHomeButtonEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     private fun updateDetailFragment(post: Post) {
