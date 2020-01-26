@@ -55,7 +55,10 @@ class TopListViewModel : ViewModel() {
     suspend fun markPostsAsDismissed(context: Context, names: List<String>) =
         withContext(Dispatchers.IO) {
             RedditRepository.saveDismissedPostsIds(context, names)
-            getTopPost(context, false)
+
+            withContext(Dispatchers.Main) {
+                posts.value = posts.value?.filterNot { names.contains(it.name) }
+            }
         }
 
     private fun getPostsToShow(context: Context, posts: List<Post>): List<Post> {

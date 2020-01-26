@@ -14,10 +14,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
+        android:onClick="@{data.getPostReadOnClikListener()}"
         android:paddingLeft="12dp"
         android:paddingTop="4dp"
-        android:paddingRight="12dp"
-        android:onClick="@{data.getPostReadOnClikListener()}">
+        android:paddingRight="12dp">
 
         <TextView
             android:id="@+id/userName"
@@ -73,14 +73,29 @@
             tools:src="@drawable/ic_launcher_background" />
 
         <TextView
+            android:id="@+id/dismiss"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_dismiss"
+            android:gravity="center"
+            android:onClick="@{data.postDismissOnClickListener}"
+            android:paddingRight="8dp"
+            android:text="@string/dismissPost"
+            android:textColor="@color/colorAccent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/postTotalComments"
+            app:layout_constraintTop_toBottomOf="@+id/postThumbnail" />
+
+        <TextView
             android:id="@+id/postTotalComments"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@{@string/commentsTotal(data.totalComments)}"
             android:textColor="@color/colorAccent"
-            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/dismiss"
+            app:layout_constraintLeft_toRightOf="@id/dismiss"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/postThumbnail"
+            app:layout_constraintTop_toTopOf="@id/dismiss"
             tools:text="13456 comments" />
 
         <View
@@ -88,6 +103,6 @@
             android:layout_height="1dp"
             android:layout_marginTop="4dp"
             android:background="@color/white"
-            app:layout_constraintTop_toBottomOf="@id/postTotalComments" />
+            app:layout_constraintTop_toBottomOf="@id/dismiss" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
